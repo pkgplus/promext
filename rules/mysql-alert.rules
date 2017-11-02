@@ -1,0 +1,8 @@
+ALERT mysql_status_handlers_read_rnd
+  IF rate(mysql_global_status_handlers_total{handler!~"Handler_read_rnd|Handler_read_rnd_next"}[5m]) > 10000000
+  FOR 5m
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.handler }} mysql读取数据文件次数过多，请合理建表索引!",
+    value = "{{ $value }}"
+  }

@@ -1,0 +1,84 @@
+ALERT service_down
+  IF up == 0
+  FOR 5m
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} 服务器宕机或{{ $labels.job }}监控服务不可用",
+    value = "{{ $value }}",
+  }
+ALERT node_reboot
+  IF max_over_time(node_boot_time{job="linux"}[1h]) - min_over_time(node_boot_time{job="linux"}[1h]) >= 43200
+  FOR 5m
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }}系统已重启",
+    value = "{{ $value }}",
+  }
+
+ALERT node_cpu_pct_threshold_exceeded
+  IF (avg by (job,instance,project,mode) (rate(node_cpu{mode="user"}[5m])) * 100) > 85
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} CPU使用率过高",
+    description = "{{ $labels.instance }} CPU使用率达到 {{ $value }}%",
+    value = "{{ $value }}",
+    unit = "%",
+  }
+
+ALERT node_cpu_iowait_threshold_exceeded
+  IF (avg by (job,instance,project,mode) (rate(node_cpu{mode="iowait"}[5m])) * 100) > 2
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} CPU iowait过高",
+    description = "{{ $labels.instance }} CPU iowait达到 {{ $value }}%",
+    value = "{{ $value }}",
+    unit = "%",
+  }
+
+ALERT node_mem_threshold_exceeded
+  IF (node_memory_MemFree{job='linux'} + node_memory_Cached{job='linux'} + node_memory_Buffers{job='linux'})/1000000 < 500
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} 剩余内存过低",
+    description = "{{ $labels.instance }} 内存剩余仅剩 {{ $value }}M",
+    value = "{{ $value }}",
+    unit = "M",
+  }
+
+ALERT node_mem_pct_threshold_exceeded
+  IF ((node_memory_MemTotal - node_memory_MemAvailable) / node_memory_MemTotal) * 100 > 85
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} 内存使用率过高",
+    description = "{{ $labels.instance }} 内存使用率达到 {{ $value }}%",
+    value = "{{ $value }}",
+    unit = "%",
+  }
+
+ALERT node_fs_pct_threshold_exceeded
+  IF 100 - node_filesystem_free{fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs",mountpoint!="/boot",mountpoint!="/mnt"} / node_filesystem_size{fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+",mountpoint!="/boot",mountpoint!="/mnt"}*100 > 70
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} 文件系统 {{ $labels.mountpoint }} 使用率过高",
+    description = "{{ $labels.instance }} 文件系统 {{ $labels.mountpoint }} 使用率达到 {{ $value }}%",
+    value = "{{ $value }}",
+    unit = "%",
+  }
+ALERT node_tcp_conn_toomuch
+  IF ceil(avg_over_time(node_tcp_connection_states[2m])) > 2000
+  FOR 2m
+  LABELS { severity = "serious" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.state }}类型TCP连接数过多",
+    description = "{{ $labels.instance }} {{ $labels.state }}类型TCP连接数达到 {{ $value }}",
+    value = "{{ $value }}",
+  }
+ALERT node_disk_io_util_threshold_exceeded
+  IF rate(node_disk_io_time_ms[5m])/1000*100 > 85
+  LABELS { severity = "serious" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.device }}磁盘io利用率过高",
+    description = "{{ $labels.instance }} {{ $labels.device }}磁盘io利用率达到 {{ $value }}%",
+    value = "{{ $value }}",
+    unit = "%",
+  }

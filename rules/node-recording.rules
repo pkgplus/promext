@@ -1,0 +1,3 @@
+node_cpu_not_idle_rate = avg(sum(rate(node_cpu{mode!="idle"}[90s])) without (mode)) without (cpu)
+node_cpu_not_idle_rate = avg(sum(rate(wmi_cpu_time_total{mode!="idle"}[90s])) without (mode)) without (core)
+node_memory_MemAvailable_ext = node_memory_MemFree+node_memory_Buffers+node_memory_Cached

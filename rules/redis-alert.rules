@@ -1,0 +1,38 @@
+ALERT redis_service_down
+  IF redis_up == 0
+  FOR 5m
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.addr }} redis服务异常",
+  }
+ALERT redis_mem_pct_threshold_exceeded
+  IF 100 * (redis_memory_used_bytes / redis_memory_max_bytes ) >= 80
+  LABELS { severity = "critical" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.addr }} redis内存使用率过高",
+    description = "{{ $labels.instance }} redis内存使用率高达 {{ $value }}%.",
+    value = "{{ $value }}",
+  }
+ALERT redis_mem_threshold_exceeded
+  IF (redis_memory_max_bytes-redis_memory_used_bytes)/1024/1024 <= 200
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.addr }} redis内存剩余不多",
+    description = "{{ $labels.instance }} redis内存仅剩余 {{ $value }}M.",
+    value = "{{ $value }}",
+  }
+ALERT redis_toomany_command_executed
+  IF rate(redis_commands_processed_total[5m]) >= 5000
+  LABELS { severity = "warning" }
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.addr }} redis执行命令过多",
+    description = "{{ $labels.instance }} redis每秒执行 {{ $value }} 条命令.",
+    value = "{{ $value }}",
+  }
+ALERT redis_dangerous_command_executed
+  IF changes(redis_command_call_duration_seconds_count{cmd=~"flushall|flushdb"}[1m]) == 1
+  LABELS { severity = "critical" } 
+  ANNOTATIONS {
+    summary = "{{ $labels.instance }} {{ $labels.addr }} redis执行了危险命令",
+    description = "{{ $labels.instance }} redis执行了危险命令 {{ $labels.cmd }}",
+ }
