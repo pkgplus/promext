@@ -16,10 +16,10 @@ func Init(app *iris.Application) {
 	party.Get("/meta/metrics", handlers.GetAllMetricsMeta)
 
 	// /console/node/<NODEIP>/metrics
-	party.Get("/console/node/:host/metrics", handlers.QueryAllMetrics)
-	party.Get("/console/node/:host/metrics/:metric", handlers.QueryMetric)
+	party.Get("/current/node/:host/metrics", handlers.QueryCurrentAllMetrics)
+	party.Get("/current/node/:host/metrics/:metric", handlers.QueryCurrentMetric)
 
 	// /graph/node/<NODEIP>/metrics
-	party.Get("/graph/node/:host/metrics", handlers.QueryRangeAllMetrics)
-	party.Get("/graph/node/:host/metrics/:metric", handlers.QueryRangeMetric)
+	party.Get("/range/node/:host/metrics", handlers.QueryRangeAllMetrics)
+	party.Get("/range/node/:host/metrics/:metric", handlers.QueryRangeMetric)
 }

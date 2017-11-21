@@ -28,41 +28,65 @@ The meta data of all support metrics
   "data": [
     {
       "name": "cpuUtilization",
-      "type": "scalar"
+      "type": "current",
+      "dsl": "node_cpu_not_idle_rate{$filter}*100"
+    },
+    {
+      "name": "cpuUtilizationAvg",
+      "type": "range",
+      "dsl": "avg_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100"
     },
     {
       "name": "cpuUtilizationMax",
-      "type": "scalar"
+      "type": "range",
+      "dsl": "max_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100"
     },
     {
       "name": "cpuUtilizationMin",
-      "type": "scalar"
+      "type": "range",
+      "dsl": "min_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100"
     },
     {
       "name": "memoryUtilization",
-      "type": "scalar"
+      "type": "current",
+      "dsl": "100 - ( node_memory_MemAvailable{$filter} OR node_memory_MemAvailable_ext{$filter})/ node_memory_MemTotal{$filter} * 100"
+    },
+    {
+      "name": "memoryUtilizationAvg",
+      "type": "range",
+      "dsl": "100 - (avg_over_time(node_memory_MemAvailable{$filter}[$duration]) OR avg_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100"
     },
     {
       "name": "memoryUtilizationMax",
-      "type": "scalar"
+      "type": "range",
+      "dsl": "100 - (max_over_time(node_memory_MemAvailable{$filter}[$duration]) OR max_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100"
     },
     {
       "name": "memoryUtilizationMin",
-      "type": "scalar"
+      "type": "range",
+      "dsl": "100 - (min_over_time(node_memory_MemAvailable{$filter}[$duration]) OR min_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100"
     },
     {
       "name": "diskUtilization",
-      "type": "vector"
+      "type": "current",
+      "dsl": "100 - node_filesystem_free{$filter, fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+\"} / node_filesystem_size * 100"
+    },
+    {
+      "name": "diskUtilizationMax",
+      "type": "range",
+      "dsl": "100 - (max_over_time(node_filesystem_free{$filter, fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+\"}[$duration])) / node_filesystem_size * 100"
     }
   ]
 }
 ```
 
-### All Metric Console Query
+### All Metric Current Query
 #### Description
 The console query api, can query the total metric current values
 #### URL
-`GET /console/node/:host/metrics`
+`GET /current/node/:host/metrics`
+
+### URL PARAMTER
 
 #### Response
 ```
@@ -85,58 +109,130 @@ The console query api, can query the total metric current values
 ```json
 {
   "status": "success",
-  "data": [{
-    "metric" : {
-        "name" : "cpuUtilization",
-        "type" : "scalar"
+  "data": [
+    {
+      "metric": {
+        "_name_": "cpuUtilization",
+        "cluster": "QD",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256351.109,
+        "3.012760416665604"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "cpuUtilization",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "memoryUtilization",
+        "cluster": "QD",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256445.479,
+        "46.9969964779287"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "cpuUtilizationMax",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/sda1",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/boot",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "29.472296537551856"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "cpuUtilizationMin",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-root",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "12.086414651922965"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "memoryUtilization",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-var",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/var",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "1.5972357882398853"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "memoryUtilizationMax",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-data",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/data",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "6.748608893397858"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "memoryUtilizationMin",
-        "type" : "scalar"
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-home",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/home",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "0.1753263251379451"
+      ]
     },
-    "value": 0.2384
-  },{
-    "metric" : {
-        "name" : "diskUtilization",
-        "type" : "vector"
-    },
-    "value": {
-        "/": 0.2384,
-        "/data": 0.2384
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-tmp",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/tmp",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256470.75,
+        "0.517217142577735"
+      ]
     }
-  }]
+  ]
 }
 ```
 
@@ -161,31 +257,23 @@ The console query api, can query the single metric current value
 
 #### Response Example
 ```json
-// if metric type is "scalar", for example cpuUtilization
 {
   "status": "success",
-  "data": {
-    "metric" : {
-       "name" : "cpuUtilization",
-       "type" : "scalar"
-    },
-    "value": 0.2384
-  }
-}
-
-// if metric type is "vector", for example diskUtilization metric
-{
-  "status": "success",
-  "data": {
-    "metric" : {
-       "name" : "diskUtilization",
-       "type" : "vector"
-    },
-    "values": {
-        "/": 0.2384,
-        "/data": 0.2384
+  "data": [
+    {
+      "metric": {
+        "_name_": "cpuUtilization",
+        "cluster": "QD",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511256351.109,
+        "3.012760416665604"
+      ]
     }
-  }
+  ]
 }
 ```
 
@@ -193,7 +281,7 @@ The console query api, can query the single metric current value
 #### Description
 The graph query api, can query the single metric current value
 #### URL
-`GET /graph/node/:host/metrics/:metric`
+`GET /range/node/:host/metrics/:metric`
 
 #### Url Parameters
 | Field    | Require | DataType      |  Name       | Description |
@@ -217,47 +305,28 @@ The graph query api, can query the single metric current value
 
 #### Response Example
 ```json
-// if metric type is "scalar", for example cpuUtilization
 {
   "status": "success",
-  "data": [{
-    "metric" : {
-       "name" : "cpuUtilization",
-       "type" : "scalar"
-    },
-    "values" : [
-       [ 1435781430.781, "1" ],
-       [ 1435781445.781, "1" ],
-       [ 1435781460.781, "1" ]
-    ]
-  }]
-}
-
-// if metric type is "vector", for example diskUtilization metric
-{
-  "status": "success",
-  "data": [{
-    "metric" : {
-       "name" : "diskUtilization",
-       "type" : "vector",
-       "param" : "/",
-    },
-    "values": [
-        [ 1435781430.781, "1" ],
-        [ 1435781445.781, "1" ],
-        [ 1435781460.781, "1" ]
-    ]
-  },{
-    "metric" : {
-       "name" : "diskUtilization",
-       "type" : "vector",
-       "param" : "/data",
-    },
-    "values": [
-        [ 1435781430.781, "1" ],
-        [ 1435781445.781, "1" ],
-        [ 1435781460.781, "1" ]
-    ]
-  }]
+  "data": [
+    {
+      "metric": {
+        "_name_": "cpuUtilizationMax",
+        "cluster": "QD",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "project": "MONITOR-PROD"
+      },
+      "values": [
+        [
+          1511252715,
+          "3.517968750001186"
+        ],
+        [
+          1511256315,
+          "4.196614583331282"
+        ]
+      ]
+    }
+  ]
 }
 ```
