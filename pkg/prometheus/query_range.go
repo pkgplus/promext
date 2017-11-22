@@ -2,7 +2,6 @@ package prometheus
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/prometheus/client_golang/api/prometheus/v1"
@@ -10,7 +9,7 @@ import (
 )
 
 func QueryRange(metric, dsl string, start, end time.Time, step string) (mvs []*model.SampleStream, err error) {
-	fmt.Printf("dsl: %s, start=%s,end=%s,step=%s\n", dsl, start.String(), end.String(), step)
+	logger.Infof("dsl: %s, start=%s,end=%s,step=%s", dsl, start.String(), end.String(), step)
 
 	var step_d time.Duration
 	step_d, err = time.ParseDuration(step)

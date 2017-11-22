@@ -20,6 +20,8 @@ var (
 	}
 
 	metricsDictMap = map[string]Metric{}
+	MetricsCurrent = []Metric{}
+	MetricsRange   = []Metric{}
 )
 
 type Metric struct {
@@ -29,9 +31,15 @@ type Metric struct {
 }
 
 func init() {
+	MetricsCurrent = make([]Metric, 0)
 	metricsDictMap = make(map[string]Metric)
 	for _, m := range MetricsDict {
 		metricsDictMap[m.Name] = m
+		if m.Type == MetricType_Current {
+			MetricsCurrent = append(MetricsCurrent, m)
+		} else {
+			MetricsRange = append(MetricsRange, m)
+		}
 	}
 }
 

@@ -85,6 +85,7 @@ The meta data of all support metrics
 The console query api, can query the total metric current values
 #### URL
 `GET /current/node/:host/metrics`
+`GET /current/metrics?filter_labelname=labelvalue`
 
 ### URL PARAMTER
 
@@ -119,8 +120,8 @@ The console query api, can query the total metric current values
         "project": "MONITOR-PROD"
       },
       "value": [
-        1511256351.109,
-        "3.012760416665604"
+        1511328473.518,
+        "2.780208333331204"
       ]
     },
     {
@@ -132,24 +133,8 @@ The console query api, can query the total metric current values
         "project": "MONITOR-PROD"
       },
       "value": [
-        1511256445.479,
-        "46.9969964779287"
-      ]
-    },
-    {
-      "metric": {
-        "_name_": "diskUtilization",
-        "cluster": "QD",
-        "device": "/dev/sda1",
-        "fstype": "xfs",
-        "instance": "10.138.16.188",
-        "job": "linux",
-        "mountpoint": "/boot",
-        "project": "MONITOR-PROD"
-      },
-      "value": [
-        1511256470.75,
-        "29.472296537551856"
+        1511328473.526,
+        "47.02097104075379"
       ]
     },
     {
@@ -164,40 +149,8 @@ The console query api, can query the total metric current values
         "project": "MONITOR-PROD"
       },
       "value": [
-        1511256470.75,
-        "12.086414651922965"
-      ]
-    },
-    {
-      "metric": {
-        "_name_": "diskUtilization",
-        "cluster": "QD",
-        "device": "/dev/mapper/centos-var",
-        "fstype": "xfs",
-        "instance": "10.138.16.188",
-        "job": "linux",
-        "mountpoint": "/var",
-        "project": "MONITOR-PROD"
-      },
-      "value": [
-        1511256470.75,
-        "1.5972357882398853"
-      ]
-    },
-    {
-      "metric": {
-        "_name_": "diskUtilization",
-        "cluster": "QD",
-        "device": "/dev/mapper/centos-data",
-        "fstype": "xfs",
-        "instance": "10.138.16.188",
-        "job": "linux",
-        "mountpoint": "/data",
-        "project": "MONITOR-PROD"
-      },
-      "value": [
-        1511256470.75,
-        "6.748608893397858"
+        1511328473.533,
+        "11.966609028064084"
       ]
     },
     {
@@ -212,8 +165,40 @@ The console query api, can query the total metric current values
         "project": "MONITOR-PROD"
       },
       "value": [
-        1511256470.75,
+        1511328473.533,
         "0.1753263251379451"
+      ]
+    },
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-data",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/data",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511328473.533,
+        "6.689012138479185"
+      ]
+    },
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/mapper/centos-var",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/var",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511328473.533,
+        "1.595930906915413"
       ]
     },
     {
@@ -228,19 +213,36 @@ The console query api, can query the total metric current values
         "project": "MONITOR-PROD"
       },
       "value": [
-        1511256470.75,
+        1511328473.533,
         "0.517217142577735"
+      ]
+    },
+    {
+      "metric": {
+        "_name_": "diskUtilization",
+        "cluster": "QD",
+        "device": "/dev/sda1",
+        "fstype": "xfs",
+        "instance": "10.138.16.188",
+        "job": "linux",
+        "mountpoint": "/boot",
+        "project": "MONITOR-PROD"
+      },
+      "value": [
+        1511328473.533,
+        "29.472296537551856"
       ]
     }
   ]
 }
 ```
 
-### Single Metric Console Query
+### Single Metric Current Query By Host
 #### Description
 The console query api, can query the single metric current value
 #### URL
-`GET /console/node/:host/metrics/:metric`
+`GET /current/node/:host/metrics/:metric`
+`GET /current/metrics/:metric?filter_labelname=labelvalue`
 
 #### Response
 ```
@@ -282,6 +284,7 @@ The console query api, can query the single metric current value
 The graph query api, can query the single metric current value
 #### URL
 `GET /range/node/:host/metrics/:metric`
+`GET /range/metrics/:metric?filter_labelname=labelvalue`
 
 #### Url Parameters
 | Field    | Require | DataType      |  Name       | Description |

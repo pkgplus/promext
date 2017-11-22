@@ -5,8 +5,10 @@ import (
 
 	clientApi "github.com/prometheus/client_golang/api"
 	APIV1 "github.com/prometheus/client_golang/api/prometheus/v1"
+	"github.com/xuebing1110/promext/pkg/log"
 )
 
+var logger log.Logger
 var api APIV1.API
 var client clientApi.Client
 
@@ -26,5 +28,11 @@ func init() {
 	}
 
 	api = APIV1.NewAPI(client)
+
+	logger = new(log.StdoutLogger)
 	return
+}
+
+func SetLogger(l log.Logger) {
+	logger = l
 }
