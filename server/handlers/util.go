@@ -62,7 +62,7 @@ func GetFilterFromParams(params map[string]string) string {
 		if filter == "" {
 			filter = fmt.Sprintf("%s=\"%s\"", labelName, value)
 		} else {
-			filter = filter + fmt.Sprintf(",%s=%s", labelName, value)
+			filter = filter + fmt.Sprintf(",%s=\"%s\"", labelName, value)
 		}
 	}
 	return filter
