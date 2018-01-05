@@ -5,10 +5,14 @@ import (
 )
 
 func GetDsl(template, filter string) string {
-	return strings.Replace(template, "$filter", filter, -1)
+	if filter == "" {
+		return strings.Replace(template, "$filter,", "", -1)
+	} else {
+		return strings.Replace(template, "$filter", filter, -1)
+	}
 }
 
 func GetRangeDsl(template, filter, duration string) string {
-	ret := strings.Replace(template, "$filter", filter, -1)
+	ret := GetDsl(template, filter)
 	return strings.Replace(ret, "$duration", duration, -1)
 }
