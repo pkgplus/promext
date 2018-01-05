@@ -6,7 +6,8 @@ import (
 
 func GetDsl(template, filter string) string {
 	if filter == "" {
-		return strings.Replace(template, "$filter,", "", -1)
+		template = strings.Replace(template, "$filter,", "", -1)
+		return strings.Replace(template, "$filter", filter, -1)
 	} else {
 		return strings.Replace(template, "$filter", filter, -1)
 	}
