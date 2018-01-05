@@ -16,7 +16,7 @@ var (
 		Metric{"memoryUtilizationMax", MetricType_Range, `100 - (max_over_time(node_memory_MemAvailable{$filter}[$duration]) OR max_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100`},
 		Metric{"memoryUtilizationMin", MetricType_Range, `100 - (min_over_time(node_memory_MemAvailable{$filter}[$duration]) OR min_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100`},
 		Metric{"diskUtilization", MetricType_Current, `100 - node_filesystem_free{$filter, fstype!~"cgroup|rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+"} / node_filesystem_size * 100`},
-		Metric{"diskUtilizationMax", MetricType_Range, `100 - (max_over_time(node_filesystem_free{$filter, fstype!~"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+"}[$duration])) / node_filesystem_size * 100`},
+		Metric{"diskUtilizationMax", MetricType_Range, `100 - (max_over_time(node_filesystem_free{$filter, fstype!~"cgroup|rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+"}[$duration])) / node_filesystem_size * 100`},
 	}
 
 	metricsDictMap = map[string]Metric{}
