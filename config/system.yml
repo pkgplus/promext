@@ -1,0 +1,47 @@
+- name: cpuUtilization
+  type: current
+  dsl: node_cpu_not_idle_rate{$filter}*100
+
+- name: cpuUtilizationAvg
+  type: range
+  dsl: avg_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100
+
+- name: cpuUtilizationMedian
+  type: range
+  dsl: quantile_over_time(0.5,node_cpu_not_idle_rate{$filter}[$duration])*100
+
+- name: cpuUtilizationMax
+  type: range
+  dsl: max_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100
+
+- name: cpuUtilizationMin
+  type: range
+  dsl: min_over_time(node_cpu_not_idle_rate{$filter}[$duration])*100
+
+- name: memoryUtilization
+  type: current
+  dsl: 100 - ( node_memory_MemAvailable{$filter} OR node_memory_MemAvailable_ext{$filter})/ node_memory_MemTotal{$filter} * 100
+
+- name: memoryUtilizationAvg
+  type: range
+  dsl: 100 - (avg_over_time(node_memory_MemAvailable{$filter}[$duration]) OR avg_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100
+
+- name: memoryUtilizationMedian
+  type: range
+  dsl: 100 - (quantile_over_time(0.5,node_memory_MemAvailable{$filter}[$duration]) OR quantile_over_time(0.5,node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100
+
+- name: memoryUtilizationMax
+  type: range
+  dsl: 100 - (max_over_time(node_memory_MemAvailable{$filter}[$duration]) OR max_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100
+
+- name: memoryUtilizationMin
+  type: range
+  dsl: 100 - (min_over_time(node_memory_MemAvailable{$filter}[$duration]) OR min_over_time(node_memory_MemAvailable_ext{$filter}[$duration])) / node_memory_MemTotal{$filter} * 100
+
+- name: diskUtilization
+  type: current
+  dsl: 100 - node_filesystem_free{$filter, fstype!~"proc|overlay|cgroup|rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+"} / node_filesystem_size * 100
+
+- name: diskUtilizationMax
+  type: range
+  dsl: 100 - (max_over_time(node_filesystem_free{$filter, fstype!~"proc|overlay|cgroup|rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|iso.+"}[$duration])) / node_filesystem_size * 100
