@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "",
+	"package": [
+		{
+			"checksumSHA1": "GKUdQJEQB3uVcl4GU+SYvBNILGo=",
+			"path": "github.com/go-yaml/yaml",
+			"revision": "d670f9405373e636a5a2765eea47fac0c9bc91a4",
+			"revisionTime": "2018-01-09T11:43:31Z"
+		}
+	],
+	"rootPath": "github.com/xuebing1110/promext"
+}

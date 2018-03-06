@@ -23,6 +23,7 @@ WORKDIR $GOPATH/src/github.com/xuebing1110/promext
 
 # build
 RUN go build -o /app/promext-apiserver server/cmd/main.go
+COPY ./config /app/config
 
 EXPOSE 8080
 WORKDIR /app
